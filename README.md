@@ -577,7 +577,7 @@ This is a beta release with the following limitations:1. Click the **Import** bu
 
 These will be addressed in future releases. Please report any issues!
 
-## 🏗️ Build for Productionflutter build web --release --pwa-strategy=offline-first -o docs --base-href /mobile_config_studio/
+## 🏗️ Build for Production flutter build web --release --pwa-strategy=offline-first -o docs --base-href /mobile_config_studio/
 
 ## 📝 Roadmap to v1.0.0
 
