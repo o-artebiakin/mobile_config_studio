@@ -1,16 +1,13 @@
 # mobile_config_studio
 
-A new Flutter project.
+## Web App
 
-## Getting Started
+🌐 [Open Web App](https://o-artebiakin.github.io/mobile_config_studio/)
 
-This project is a starting point for a Flutter application.
+## Build Details
 
-A few resources to get you started if this is your first Flutter project:
+To build the web version with PWA offline-first strategy:
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
-
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+```bash
+flutter build web --release --pwa-strategy=offline-first -o docs --base-href /mobile_config_studio/
+```
