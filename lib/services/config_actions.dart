@@ -378,6 +378,9 @@ class ConfigActions {
     final jsonData = jsonEncode(_state.toJson());
     debugPrint('Save JSON: $jsonData');
     
+    // Mark as saved
+    ref.read(configProvider.notifier).markAsSaved();
+    
     ScaffoldMessenger.of(context).showSnackBar(
       const SnackBar(
         content: Text('Configuration saved!'),

@@ -15,7 +15,7 @@ void main() {
     // Verify that the app bar is displayed
     expect(find.text('Config Studio'), findsOneWidget);
 
-    // Verify that the app starts with no data (empty state)
-    expect(find.text('No groups yet.\nClick "Add Group" to get started.'), findsOneWidget);
+    // Verify that the app starts with no data (empty state - need to add flavor first)
+    expect(find.text('Add a flavor to get started.'), findsOneWidget);
   });
 }

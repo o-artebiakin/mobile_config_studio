@@ -44,7 +44,9 @@ class GroupsSidebar extends ConsumerWidget {
                     child: Padding(
                       padding: const EdgeInsets.all(16.0),
                       child: Text(
-                        'No groups yet.\nClick "Add Group" to get started.',
+                        configState.flavors.isEmpty
+                            ? 'Add a flavor to get started.'
+                            : 'No groups yet.\nClick "Add Group" to get started.',
                         textAlign: TextAlign.center,
                         style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                               color: Theme.of(context).colorScheme.onSurfaceVariant,
@@ -75,7 +77,7 @@ class GroupsSidebar extends ConsumerWidget {
             child: SizedBox(
               width: double.infinity,
               child: ElevatedButton.icon(
-                onPressed: onAddGroup,
+                onPressed: configState.flavors.isEmpty ? null : onAddGroup,
                 icon: const Icon(Icons.add),
                 label: const Text('Add Group'),
               ),

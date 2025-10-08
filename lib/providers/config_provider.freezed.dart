@@ -21,8 +21,10 @@ ConfigState _$ConfigStateFromJson(Map<String, dynamic> json) {
 
 /// @nodoc
 mixin _$ConfigState {
-  List<ConfigGroup> get groups => throw _privateConstructorUsedError;
+  List<ConfigFlavor> get flavors => throw _privateConstructorUsedError;
+  String get selectedFlavorName => throw _privateConstructorUsedError;
   String get selectedGroupName => throw _privateConstructorUsedError;
+  bool get hasUnsavedChanges => throw _privateConstructorUsedError;
 
   /// Serializes this ConfigState to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
@@ -41,7 +43,12 @@ abstract class $ConfigStateCopyWith<$Res> {
     $Res Function(ConfigState) then,
   ) = _$ConfigStateCopyWithImpl<$Res, ConfigState>;
   @useResult
-  $Res call({List<ConfigGroup> groups, String selectedGroupName});
+  $Res call({
+    List<ConfigFlavor> flavors,
+    String selectedFlavorName,
+    String selectedGroupName,
+    bool hasUnsavedChanges,
+  });
 }
 
 /// @nodoc
@@ -58,17 +65,30 @@ class _$ConfigStateCopyWithImpl<$Res, $Val extends ConfigState>
   /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
-  $Res call({Object? groups = null, Object? selectedGroupName = null}) {
+  $Res call({
+    Object? flavors = null,
+    Object? selectedFlavorName = null,
+    Object? selectedGroupName = null,
+    Object? hasUnsavedChanges = null,
+  }) {
     return _then(
       _value.copyWith(
-            groups: null == groups
-                ? _value.groups
-                : groups // ignore: cast_nullable_to_non_nullable
-                      as List<ConfigGroup>,
+            flavors: null == flavors
+                ? _value.flavors
+                : flavors // ignore: cast_nullable_to_non_nullable
+                      as List<ConfigFlavor>,
+            selectedFlavorName: null == selectedFlavorName
+                ? _value.selectedFlavorName
+                : selectedFlavorName // ignore: cast_nullable_to_non_nullable
+                      as String,
             selectedGroupName: null == selectedGroupName
                 ? _value.selectedGroupName
                 : selectedGroupName // ignore: cast_nullable_to_non_nullable
                       as String,
+            hasUnsavedChanges: null == hasUnsavedChanges
+                ? _value.hasUnsavedChanges
+                : hasUnsavedChanges // ignore: cast_nullable_to_non_nullable
+                      as bool,
           )
           as $Val,
     );
@@ -84,7 +104,12 @@ abstract class _$$ConfigStateImplCopyWith<$Res>
   ) = __$$ConfigStateImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({List<ConfigGroup> groups, String selectedGroupName});
+  $Res call({
+    List<ConfigFlavor> flavors,
+    String selectedFlavorName,
+    String selectedGroupName,
+    bool hasUnsavedChanges,
+  });
 }
 
 /// @nodoc
@@ -100,17 +125,30 @@ class __$$ConfigStateImplCopyWithImpl<$Res>
   /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
-  $Res call({Object? groups = null, Object? selectedGroupName = null}) {
+  $Res call({
+    Object? flavors = null,
+    Object? selectedFlavorName = null,
+    Object? selectedGroupName = null,
+    Object? hasUnsavedChanges = null,
+  }) {
     return _then(
       _$ConfigStateImpl(
-        groups: null == groups
-            ? _value._groups
-            : groups // ignore: cast_nullable_to_non_nullable
-                  as List<ConfigGroup>,
+        flavors: null == flavors
+            ? _value._flavors
+            : flavors // ignore: cast_nullable_to_non_nullable
+                  as List<ConfigFlavor>,
+        selectedFlavorName: null == selectedFlavorName
+            ? _value.selectedFlavorName
+            : selectedFlavorName // ignore: cast_nullable_to_non_nullable
+                  as String,
         selectedGroupName: null == selectedGroupName
             ? _value.selectedGroupName
             : selectedGroupName // ignore: cast_nullable_to_non_nullable
                   as String,
+        hasUnsavedChanges: null == hasUnsavedChanges
+            ? _value.hasUnsavedChanges
+            : hasUnsavedChanges // ignore: cast_nullable_to_non_nullable
+                  as bool,
       ),
     );
   }
@@ -118,30 +156,48 @@ class __$$ConfigStateImplCopyWithImpl<$Res>
 
 /// @nodoc
 @JsonSerializable()
-class _$ConfigStateImpl extends _ConfigState {
+class _$ConfigStateImpl extends _ConfigState with DiagnosticableTreeMixin {
   const _$ConfigStateImpl({
-    required final List<ConfigGroup> groups,
+    required final List<ConfigFlavor> flavors,
+    required this.selectedFlavorName,
     required this.selectedGroupName,
-  }) : _groups = groups,
+    this.hasUnsavedChanges = false,
+  }) : _flavors = flavors,
        super._();
 
   factory _$ConfigStateImpl.fromJson(Map<String, dynamic> json) =>
       _$$ConfigStateImplFromJson(json);
 
-  final List<ConfigGroup> _groups;
+  final List<ConfigFlavor> _flavors;
   @override
-  List<ConfigGroup> get groups {
-    if (_groups is EqualUnmodifiableListView) return _groups;
+  List<ConfigFlavor> get flavors {
+    if (_flavors is EqualUnmodifiableListView) return _flavors;
     // ignore: implicit_dynamic_type
-    return EqualUnmodifiableListView(_groups);
+    return EqualUnmodifiableListView(_flavors);
   }
 
   @override
+  final String selectedFlavorName;
+  @override
   final String selectedGroupName;
+  @override
+  @JsonKey()
+  final bool hasUnsavedChanges;
 
   @override
-  String toString() {
-    return 'ConfigState(groups: $groups, selectedGroupName: $selectedGroupName)';
+  String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
+    return 'ConfigState(flavors: $flavors, selectedFlavorName: $selectedFlavorName, selectedGroupName: $selectedGroupName, hasUnsavedChanges: $hasUnsavedChanges)';
+  }
+
+  @override
+  void debugFillProperties(DiagnosticPropertiesBuilder properties) {
+    super.debugFillProperties(properties);
+    properties
+      ..add(DiagnosticsProperty('type', 'ConfigState'))
+      ..add(DiagnosticsProperty('flavors', flavors))
+      ..add(DiagnosticsProperty('selectedFlavorName', selectedFlavorName))
+      ..add(DiagnosticsProperty('selectedGroupName', selectedGroupName))
+      ..add(DiagnosticsProperty('hasUnsavedChanges', hasUnsavedChanges));
   }
 
   @override
@@ -149,17 +205,23 @@ class _$ConfigStateImpl extends _ConfigState {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$ConfigStateImpl &&
-            const DeepCollectionEquality().equals(other._groups, _groups) &&
+            const DeepCollectionEquality().equals(other._flavors, _flavors) &&
+            (identical(other.selectedFlavorName, selectedFlavorName) ||
+                other.selectedFlavorName == selectedFlavorName) &&
             (identical(other.selectedGroupName, selectedGroupName) ||
-                other.selectedGroupName == selectedGroupName));
+                other.selectedGroupName == selectedGroupName) &&
+            (identical(other.hasUnsavedChanges, hasUnsavedChanges) ||
+                other.hasUnsavedChanges == hasUnsavedChanges));
   }
 
   @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   int get hashCode => Object.hash(
     runtimeType,
-    const DeepCollectionEquality().hash(_groups),
+    const DeepCollectionEquality().hash(_flavors),
+    selectedFlavorName,
     selectedGroupName,
+    hasUnsavedChanges,
   );
 
   /// Create a copy of ConfigState
@@ -178,8 +240,10 @@ class _$ConfigStateImpl extends _ConfigState {
 
 abstract class _ConfigState extends ConfigState {
   const factory _ConfigState({
-    required final List<ConfigGroup> groups,
+    required final List<ConfigFlavor> flavors,
+    required final String selectedFlavorName,
     required final String selectedGroupName,
+    final bool hasUnsavedChanges,
   }) = _$ConfigStateImpl;
   const _ConfigState._() : super._();
 
@@ -187,9 +251,13 @@ abstract class _ConfigState extends ConfigState {
       _$ConfigStateImpl.fromJson;
 
   @override
-  List<ConfigGroup> get groups;
+  List<ConfigFlavor> get flavors;
+  @override
+  String get selectedFlavorName;
   @override
   String get selectedGroupName;
+  @override
+  bool get hasUnsavedChanges;
 
   /// Create a copy of ConfigState
   /// with the given fields replaced by the non-null parameter values.

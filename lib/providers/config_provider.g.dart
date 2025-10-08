@@ -8,14 +8,18 @@ part of 'config_provider.dart';
 
 _$ConfigStateImpl _$$ConfigStateImplFromJson(Map<String, dynamic> json) =>
     _$ConfigStateImpl(
-      groups: (json['groups'] as List<dynamic>)
-          .map((e) => ConfigGroup.fromJson(e as Map<String, dynamic>))
+      flavors: (json['flavors'] as List<dynamic>)
+          .map((e) => ConfigFlavor.fromJson(e as Map<String, dynamic>))
           .toList(),
+      selectedFlavorName: json['selectedFlavorName'] as String,
       selectedGroupName: json['selectedGroupName'] as String,
+      hasUnsavedChanges: json['hasUnsavedChanges'] as bool? ?? false,
     );
 
 Map<String, dynamic> _$$ConfigStateImplToJson(_$ConfigStateImpl instance) =>
     <String, dynamic>{
-      'groups': instance.groups,
+      'flavors': instance.flavors,
+      'selectedFlavorName': instance.selectedFlavorName,
       'selectedGroupName': instance.selectedGroupName,
+      'hasUnsavedChanges': instance.hasUnsavedChanges,
     };

@@ -1,9 +1,13 @@
 import 'dart:convert';
+
 import 'package:flutter/material.dart';
+
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+
 import '../providers/config_provider.dart';
 import '../services/config_actions.dart';
+import '../widgets/flavor_dropdown.dart';
 import '../widgets/groups_sidebar.dart';
 import '../widgets/keys_panel.dart';
 
@@ -18,6 +22,7 @@ class HomeScreen extends HookConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final actions = ConfigActions(context, ref);
+    final state = ref.watch(configProvider);
     
     // Load config from URL parameter on first build
     useEffect(() {
@@ -57,7 +62,14 @@ class HomeScreen extends HookConsumerWidget {
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Config Studio'),
+        title: Row(
+          children: [
+            const Text('Config Studio'),
+            const SizedBox(width: 24),
+            // Flavor selector in AppBar
+            FlavorDropdown(),
+          ],
+        ),
         actions: [
           IconButton(
             icon: const Icon(Icons.file_upload),
@@ -88,11 +100,13 @@ class HomeScreen extends HookConsumerWidget {
           ),
         ],
       ),
-      floatingActionButton: FloatingActionButton.extended(
-        onPressed: actions.saveConfig,
-        icon: const Icon(Icons.save),
-        label: const Text('Save Config'),
-      ),
+      floatingActionButton: state.hasUnsavedChanges
+          ? FloatingActionButton.extended(
+              onPressed: actions.saveConfig,
+              icon: const Icon(Icons.save),
+              label: const Text('Save Config'),
+            )
+          : null,
     );
   }
 }
