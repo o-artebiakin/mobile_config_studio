@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
 
@@ -15,7 +16,7 @@ void main() {
     // Verify that the app bar is displayed
     expect(find.text('Config Studio'), findsOneWidget);
 
-    // Verify that the app starts with no data (empty state - need to add flavor first)
-    expect(find.text('Add a flavor to get started.'), findsOneWidget);
+    // Verify that icons are present for empty state
+    expect(find.byIcon(Icons.settings_applications), findsOneWidget);
   });
 }

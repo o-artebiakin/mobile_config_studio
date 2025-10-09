@@ -7,23 +7,19 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 import '../providers/config_provider.dart';
 import '../services/config_actions.dart';
-import '../widgets/flavor_dropdown.dart';
-import '../widgets/groups_sidebar.dart';
 import '../widgets/keys_panel.dart';
+import '../widgets/main_navigation_rail.dart';
 
 class HomeScreen extends HookConsumerWidget {
   final String? configParam;
-  
-  const HomeScreen({
-    super.key,
-    this.configParam,
-  });
+
+  const HomeScreen({super.key, this.configParam});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final actions = ConfigActions(context, ref);
     final state = ref.watch(configProvider);
-    
+
     // Load config from URL parameter on first build
     useEffect(() {
       if (configParam != null && configParam!.isNotEmpty) {
@@ -33,10 +29,10 @@ class HomeScreen extends HookConsumerWidget {
             final decodedBytes = base64Decode(configParam!);
             final jsonString = utf8.decode(decodedBytes);
             final configData = jsonDecode(jsonString) as Map<String, dynamic>;
-            
+
             // Load into state
             ref.read(configProvider.notifier).loadFromJson(configData);
-            
+
             // Show success message
             ScaffoldMessenger.of(context).showSnackBar(
               const SnackBar(
@@ -61,43 +57,14 @@ class HomeScreen extends HookConsumerWidget {
     }, [configParam]); // Re-run if configParam changes
 
     return Scaffold(
-      appBar: AppBar(
-        title: Row(
-          children: [
-            const Text('Config Studio'),
-            const SizedBox(width: 24),
-            // Flavor selector in AppBar
-            FlavorDropdown(),
-          ],
-        ),
-        actions: [
-          IconButton(
-            icon: const Icon(Icons.file_upload),
-            tooltip: 'Import',
-            onPressed: actions.importConfig,
-          ),
-          IconButton(
-            icon: const Icon(Icons.file_download),
-            tooltip: 'Export',
-            onPressed: actions.exportConfig,
-          ),
-          IconButton(
-            icon: const Icon(Icons.refresh),
-            tooltip: 'Reset',
-            onPressed: actions.resetConfig,
-          ),
-        ],
-      ),
       body: Row(
         children: [
-          GroupsSidebar(
+          MainNavigationRail(
             onAddGroup: actions.addGroup,
+            onImport: actions.importConfig,
+            onExport: actions.exportConfig,
           ),
-          Expanded(
-            child: KeysPanel(
-              onAddKey: actions.addKey,
-            ),
-          ),
+          Expanded(child: KeysPanel(onAddKey: actions.addKey)),
         ],
       ),
       floatingActionButton: state.hasUnsavedChanges

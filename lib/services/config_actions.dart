@@ -76,11 +76,12 @@ class ConfigActions {
                 try {
                   final decodedBytes = base64Decode(controller.text.trim());
                   final jsonString = utf8.decode(decodedBytes);
-                  final configData = jsonDecode(jsonString) as Map<String, dynamic>;
-                  
+                  final configData =
+                      jsonDecode(jsonString) as Map<String, dynamic>;
+
                   _notifier.loadFromJson(configData);
                   Navigator.pop(context);
-                  
+
                   ScaffoldMessenger.of(context).showSnackBar(
                     const SnackBar(
                       content: Text('Configuration imported successfully'),
@@ -103,14 +104,14 @@ class ConfigActions {
           ),
         ],
       ),
-    ).then((_) => controller.dispose());
+    );
   }
 
   void exportConfig() {
     final jsonData = _state.toJsonExport(); // Use custom export method
     final jsonString = jsonEncode(jsonData);
     final base64Encoded = base64Encode(utf8.encode(jsonString));
-    
+
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
@@ -133,10 +134,7 @@ class ConfigActions {
               ),
               child: SelectableText(
                 base64Encoded,
-                style: const TextStyle(
-                  fontFamily: 'monospace',
-                  fontSize: 12,
-                ),
+                style: const TextStyle(fontFamily: 'monospace', fontSize: 12),
               ),
             ),
             const SizedBox(height: 16),
@@ -145,7 +143,9 @@ class ConfigActions {
                 Expanded(
                   child: OutlinedButton.icon(
                     onPressed: () async {
-                      await Clipboard.setData(ClipboardData(text: base64Encoded));
+                      await Clipboard.setData(
+                        ClipboardData(text: base64Encoded),
+                      );
                       if (context.mounted) {
                         ScaffoldMessenger.of(context).showSnackBar(
                           const SnackBar(
@@ -168,16 +168,21 @@ class ConfigActions {
                       if (kIsWeb) {
                         // For web, use the full URL with origin
                         final router = GoRouter.of(context);
-                        final location = router.namedLocation('home', 
-                          queryParameters: {'config': base64Encoded});
+                        final location = router.namedLocation(
+                          'home',
+                          queryParameters: {'config': base64Encoded},
+                        );
                         final origin = Uri.base.origin;
-                        final basePath = Uri.base.path.replaceAll(RegExp(r'/$'), '');
+                        final basePath = Uri.base.path.replaceAll(
+                          RegExp(r'/$'),
+                          '',
+                        );
                         shareUrl = '$origin$basePath$location';
                       } else {
                         // For mobile, use deep link format
                         shareUrl = 'configstudio://home?config=$base64Encoded';
                       }
-                      
+
                       await Clipboard.setData(ClipboardData(text: shareUrl));
                       if (context.mounted) {
                         ScaffoldMessenger.of(context).showSnackBar(
@@ -253,6 +258,19 @@ class ConfigActions {
               labelText: 'Group Name',
               border: OutlineInputBorder(),
             ),
+            onFieldSubmitted: (value) {
+              if (formKey.currentState!.validate()) {
+                final groupName = controller.text.trim();
+                _notifier.addGroup(groupName);
+                Navigator.pop(context);
+                ScaffoldMessenger.of(context).showSnackBar(
+                  SnackBar(
+                    content: Text('Group "$groupName" added'),
+                    behavior: SnackBarBehavior.floating,
+                  ),
+                );
+              }
+            },
             validator: (value) {
               if (value == null || value.trim().isEmpty) {
                 return 'Group name cannot be empty';
@@ -273,11 +291,12 @@ class ConfigActions {
           FilledButton(
             onPressed: () {
               if (formKey.currentState!.validate()) {
-                _notifier.addGroup(controller.text.trim());
+                final groupName = controller.text.trim();
+                _notifier.addGroup(groupName);
                 Navigator.pop(context);
                 ScaffoldMessenger.of(context).showSnackBar(
                   SnackBar(
-                    content: Text('Group "${controller.text.trim()}" added'),
+                    content: Text('Group "$groupName" added'),
                     behavior: SnackBarBehavior.floating,
                   ),
                 );
@@ -287,7 +306,7 @@ class ConfigActions {
           ),
         ],
       ),
-    ).then((_) => controller.dispose());
+    );
   }
 
   void addKey() {
@@ -347,17 +366,15 @@ class ConfigActions {
           FilledButton(
             onPressed: () {
               if (formKey.currentState!.validate()) {
+                final keyName = keyController.text.trim();
                 _notifier.addKey(
                   _state.selectedGroupName,
-                  ConfigKey(
-                    key: keyController.text.trim(),
-                    value: valueController.text.trim(),
-                  ),
+                  ConfigKey(key: keyName, value: valueController.text.trim()),
                 );
                 Navigator.pop(context);
                 ScaffoldMessenger.of(context).showSnackBar(
                   SnackBar(
-                    content: Text('Key "${keyController.text.trim()}" added'),
+                    content: Text('Key "$keyName" added'),
                     behavior: SnackBarBehavior.floating,
                   ),
                 );
@@ -367,20 +384,17 @@ class ConfigActions {
           ),
         ],
       ),
-    ).then((_) {
-      keyController.dispose();
-      valueController.dispose();
-    });
+    );
   }
 
   void saveConfig() {
     // TODO: Implement actual save to persistent storage
     final jsonData = jsonEncode(_state.toJson());
     debugPrint('Save JSON: $jsonData');
-    
+
     // Mark as saved
     ref.read(configProvider.notifier).markAsSaved();
-    
+
     ScaffoldMessenger.of(context).showSnackBar(
       const SnackBar(
         content: Text('Configuration saved!'),

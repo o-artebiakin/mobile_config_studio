@@ -24,15 +24,19 @@ class KeysPanelHeader extends StatelessWidget {
       ),
       child: Row(
         children: [
-          Text(
-            groupName.isEmpty ? 'No Group Selected' : groupName,
-            style: Theme.of(context).textTheme.headlineSmall?.copyWith(
-              color: groupName.isEmpty 
-                ? Theme.of(context).colorScheme.onSurfaceVariant
-                : null,
+          Expanded(
+            child: Text(
+              groupName.isEmpty ? 'No Group Selected' : groupName,
+              style: Theme.of(context).textTheme.headlineSmall?.copyWith(
+                color: groupName.isEmpty 
+                  ? Theme.of(context).colorScheme.onSurfaceVariant
+                  : null,
+              ),
+              overflow: TextOverflow.ellipsis,
+              maxLines: 1,
             ),
           ),
-          const Spacer(),
+          const SizedBox(width: 8),
           Text(
             '$keyCount ${keyCount == 1 ? 'key' : 'keys'}',
             style: Theme.of(context).textTheme.bodyMedium?.copyWith(
