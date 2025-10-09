@@ -17,12 +17,14 @@ class MainNavigationRail extends HookConsumerWidget {
   final VoidCallback onAddGroup;
   final VoidCallback onImport;
   final VoidCallback onExport;
+  final VoidCallback onGenerate;
 
   const MainNavigationRail({
     super.key,
     required this.onAddGroup,
     required this.onImport,
     required this.onExport,
+    required this.onGenerate,
   });
 
   @override
@@ -114,6 +116,7 @@ class MainNavigationRail extends HookConsumerWidget {
                 isExpanded: !isMinimizedSize,
                 onImport: onImport,
                 onExport: onExport,
+                onGenerate: onGenerate,
               ),
               const Divider(height: 1),
               Align(

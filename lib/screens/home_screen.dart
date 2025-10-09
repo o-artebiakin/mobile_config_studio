@@ -9,6 +9,7 @@ import '../providers/config_provider.dart';
 import '../services/config_actions.dart';
 import '../widgets/keys_panel.dart';
 import '../widgets/main_navigation_rail.dart';
+import 'generate_screen.dart';
 
 class HomeScreen extends HookConsumerWidget {
   final String? configParam;
@@ -63,6 +64,7 @@ class HomeScreen extends HookConsumerWidget {
             onAddGroup: actions.addGroup,
             onImport: actions.importConfig,
             onExport: actions.exportConfig,
+            onGenerate: () => _navigateToGenerate(context),
           ),
           Expanded(child: KeysPanel(onAddKey: actions.addKey)),
         ],
@@ -74,6 +76,14 @@ class HomeScreen extends HookConsumerWidget {
               label: const Text('Save Config'),
             )
           : null,
+    );
+  }
+
+  void _navigateToGenerate(BuildContext context) {
+    Navigator.of(context).push(
+      MaterialPageRoute(
+        builder: (context) => const GenerateScreen(),
+      ),
     );
   }
 }
