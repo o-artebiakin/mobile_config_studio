@@ -5,7 +5,67 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [0.0.1] - 2024-10-08
+## [0.1.0-beta] - 2025-10-09
+
+### 🎉 Major Feature Release - Generate & Export Capabilities
+
+This release adds comprehensive configuration generation and export features with a clean modular architecture.
+
+#### ✨ New Features
+
+**Generate Screen (Multi-Format Output)**
+- ✅ JSON configuration export (pretty-printed)
+- ✅ Base64 encoding for URL sharing and import
+- ✅ Flutter CLI commands with `--dart-define` args
+- ✅ Confluence documentation with tables and security notes
+- ✅ VS Code `launch.json` configuration generator
+- ✅ Android Studio run configuration guide
+
+**Command Configuration**
+- ✅ Command type selector (flutter run / flutter build)
+- ✅ Flavor selection dropdown
+- ✅ Placeholder mode for secure documentation (replaces values with `<value>`)
+- ✅ Automatic regeneration when options change
+
+**Export & Sharing**
+- ✅ Copy to clipboard for all output formats
+- ✅ Download JSON (web platform)
+- ✅ Shareable URLs with base64 config
+- ✅ Import from URL parameters (existing feature)
+
+#### 🏗️ Architecture Improvements
+
+**Modular Refactoring**
+- ✅ MainNavigationRail split into 7 focused components
+- ✅ Generate screen refactored into widget components
+- ✅ Service layer for all generators (testable, reusable)
+- ✅ Clean separation of concerns (UI/business logic)
+
+**Code Quality**
+- ✅ 10 new unit tests for ConfigExportService
+- ✅ All 11 tests passing
+- ✅ `flutter analyze` clean
+- ✅ No widget-creating methods (pure widget classes)
+- ✅ Production-ready code standards
+
+#### 🛠️ Technical Stack Updates
+- ConfigExportService - Centralized export utilities
+- 4 Generator services (CommandLine, Confluence, VSCode, AndroidStudio)
+- ClipboardHelper - Reusable clipboard operations
+- Demo config generator tool for testing
+
+#### 📚 Documentation
+- Comprehensive commit messages
+- Inline code documentation
+- Clear widget/service separation
+
+#### 🐛 Fixes
+- Fixed deprecation warnings (DropdownButtonFormField value → initialValue)
+- Improved null safety handling
+
+---
+
+## [0.0.1-beta] - 2024-10-08
 
 ### 🚀 Early Beta Release - Demo/Preview Only
 
