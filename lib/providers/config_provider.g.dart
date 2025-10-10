@@ -13,7 +13,6 @@ _$ConfigStateImpl _$$ConfigStateImplFromJson(Map<String, dynamic> json) =>
           .toList(),
       selectedFlavorName: json['selectedFlavorName'] as String,
       selectedGroupName: json['selectedGroupName'] as String,
-      hasUnsavedChanges: json['hasUnsavedChanges'] as bool? ?? false,
     );
 
 Map<String, dynamic> _$$ConfigStateImplToJson(_$ConfigStateImpl instance) =>
@@ -21,5 +20,4 @@ Map<String, dynamic> _$$ConfigStateImplToJson(_$ConfigStateImpl instance) =>
       'flavors': instance.flavors,
       'selectedFlavorName': instance.selectedFlavorName,
       'selectedGroupName': instance.selectedGroupName,
-      'hasUnsavedChanges': instance.hasUnsavedChanges,
     };

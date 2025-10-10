@@ -19,7 +19,6 @@ class HomeScreen extends HookConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final actions = ConfigActions(context, ref);
-    final state = ref.watch(configProvider);
 
     // Load config from URL parameter on first build
     useEffect(() {
@@ -69,13 +68,6 @@ class HomeScreen extends HookConsumerWidget {
           Expanded(child: KeysPanel(onAddKey: actions.addKey)),
         ],
       ),
-      floatingActionButton: state.hasUnsavedChanges
-          ? FloatingActionButton.extended(
-              onPressed: actions.saveConfig,
-              icon: const Icon(Icons.save),
-              label: const Text('Save Config'),
-            )
-          : null,
     );
   }
 

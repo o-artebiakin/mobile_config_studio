@@ -1,5 +1,7 @@
 import 'dart:convert';
 
+import 'package:flutter/foundation.dart';
+
 void main() {
   // Create demo configuration with multiple flavors
   final demoConfig = {
@@ -91,16 +93,16 @@ void main() {
   // Encode to base64
   final base64String = base64Encode(utf8.encode(jsonString));
 
-  print('=== DEMO CONFIGURATION ===\n');
-  print('JSON:');
-  print(const JsonEncoder.withIndent('  ').convert(demoConfig));
-  print('\n=== BASE64 ENCODED ===\n');
-  print(base64String);
-  print('\n=== TEST URLS ===\n');
-  print('Local:');
-  print('http://localhost:8080/?config=$base64String');
-  print('\nGitHub Pages:');
-  print('https://o-artebiakin.github.io/mobile_config_studio/?config=$base64String');
+  debugPrint('=== DEMO CONFIGURATION ===\n');
+  debugPrint('JSON:');
+  debugPrint(const JsonEncoder.withIndent('  ').convert(demoConfig));
+  debugPrint('\n=== BASE64 ENCODED ===\n');
+  debugPrint(base64String);
+  debugPrint('\n=== TEST URLS ===\n');
+  debugPrint('Local:');
+  debugPrint('http://localhost:8080/?config=$base64String');
+  debugPrint('\nGitHub Pages:');
+  debugPrint('https://o-artebiakin.github.io/mobile_config_studio/?config=$base64String');
 
   // Create a simpler demo with just one flavor for quick testing
   final simpleDemoConfig = {
@@ -129,8 +131,8 @@ void main() {
 
   final simpleBase64 = base64Encode(utf8.encode(jsonEncode(simpleDemoConfig)));
 
-  print('\n=== SIMPLE DEMO (1 Flavor) ===\n');
-  print('Base64: $simpleBase64');
-  print('\nLocal URL:');
-  print('http://localhost:8080/?config=$simpleBase64');
+  debugPrint('\n=== SIMPLE DEMO (1 Flavor) ===\n');
+  debugPrint('Base64: $simpleBase64');
+  debugPrint('\nLocal URL:');
+  debugPrint('http://localhost:8080/?config=$simpleBase64');
 }

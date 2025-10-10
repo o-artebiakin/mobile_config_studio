@@ -24,7 +24,6 @@ mixin _$ConfigState {
   List<ConfigFlavor> get flavors => throw _privateConstructorUsedError;
   String get selectedFlavorName => throw _privateConstructorUsedError;
   String get selectedGroupName => throw _privateConstructorUsedError;
-  bool get hasUnsavedChanges => throw _privateConstructorUsedError;
 
   /// Serializes this ConfigState to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
@@ -47,7 +46,6 @@ abstract class $ConfigStateCopyWith<$Res> {
     List<ConfigFlavor> flavors,
     String selectedFlavorName,
     String selectedGroupName,
-    bool hasUnsavedChanges,
   });
 }
 
@@ -69,7 +67,6 @@ class _$ConfigStateCopyWithImpl<$Res, $Val extends ConfigState>
     Object? flavors = null,
     Object? selectedFlavorName = null,
     Object? selectedGroupName = null,
-    Object? hasUnsavedChanges = null,
   }) {
     return _then(
       _value.copyWith(
@@ -85,10 +82,6 @@ class _$ConfigStateCopyWithImpl<$Res, $Val extends ConfigState>
                 ? _value.selectedGroupName
                 : selectedGroupName // ignore: cast_nullable_to_non_nullable
                       as String,
-            hasUnsavedChanges: null == hasUnsavedChanges
-                ? _value.hasUnsavedChanges
-                : hasUnsavedChanges // ignore: cast_nullable_to_non_nullable
-                      as bool,
           )
           as $Val,
     );
@@ -108,7 +101,6 @@ abstract class _$$ConfigStateImplCopyWith<$Res>
     List<ConfigFlavor> flavors,
     String selectedFlavorName,
     String selectedGroupName,
-    bool hasUnsavedChanges,
   });
 }
 
@@ -129,7 +121,6 @@ class __$$ConfigStateImplCopyWithImpl<$Res>
     Object? flavors = null,
     Object? selectedFlavorName = null,
     Object? selectedGroupName = null,
-    Object? hasUnsavedChanges = null,
   }) {
     return _then(
       _$ConfigStateImpl(
@@ -145,10 +136,6 @@ class __$$ConfigStateImplCopyWithImpl<$Res>
             ? _value.selectedGroupName
             : selectedGroupName // ignore: cast_nullable_to_non_nullable
                   as String,
-        hasUnsavedChanges: null == hasUnsavedChanges
-            ? _value.hasUnsavedChanges
-            : hasUnsavedChanges // ignore: cast_nullable_to_non_nullable
-                  as bool,
       ),
     );
   }
@@ -161,7 +148,6 @@ class _$ConfigStateImpl extends _ConfigState with DiagnosticableTreeMixin {
     required final List<ConfigFlavor> flavors,
     required this.selectedFlavorName,
     required this.selectedGroupName,
-    this.hasUnsavedChanges = false,
   }) : _flavors = flavors,
        super._();
 
@@ -180,13 +166,10 @@ class _$ConfigStateImpl extends _ConfigState with DiagnosticableTreeMixin {
   final String selectedFlavorName;
   @override
   final String selectedGroupName;
-  @override
-  @JsonKey()
-  final bool hasUnsavedChanges;
 
   @override
   String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
-    return 'ConfigState(flavors: $flavors, selectedFlavorName: $selectedFlavorName, selectedGroupName: $selectedGroupName, hasUnsavedChanges: $hasUnsavedChanges)';
+    return 'ConfigState(flavors: $flavors, selectedFlavorName: $selectedFlavorName, selectedGroupName: $selectedGroupName)';
   }
 
   @override
@@ -196,8 +179,7 @@ class _$ConfigStateImpl extends _ConfigState with DiagnosticableTreeMixin {
       ..add(DiagnosticsProperty('type', 'ConfigState'))
       ..add(DiagnosticsProperty('flavors', flavors))
       ..add(DiagnosticsProperty('selectedFlavorName', selectedFlavorName))
-      ..add(DiagnosticsProperty('selectedGroupName', selectedGroupName))
-      ..add(DiagnosticsProperty('hasUnsavedChanges', hasUnsavedChanges));
+      ..add(DiagnosticsProperty('selectedGroupName', selectedGroupName));
   }
 
   @override
@@ -209,9 +191,7 @@ class _$ConfigStateImpl extends _ConfigState with DiagnosticableTreeMixin {
             (identical(other.selectedFlavorName, selectedFlavorName) ||
                 other.selectedFlavorName == selectedFlavorName) &&
             (identical(other.selectedGroupName, selectedGroupName) ||
-                other.selectedGroupName == selectedGroupName) &&
-            (identical(other.hasUnsavedChanges, hasUnsavedChanges) ||
-                other.hasUnsavedChanges == hasUnsavedChanges));
+                other.selectedGroupName == selectedGroupName));
   }
 
   @JsonKey(includeFromJson: false, includeToJson: false)
@@ -221,7 +201,6 @@ class _$ConfigStateImpl extends _ConfigState with DiagnosticableTreeMixin {
     const DeepCollectionEquality().hash(_flavors),
     selectedFlavorName,
     selectedGroupName,
-    hasUnsavedChanges,
   );
 
   /// Create a copy of ConfigState
@@ -243,7 +222,6 @@ abstract class _ConfigState extends ConfigState {
     required final List<ConfigFlavor> flavors,
     required final String selectedFlavorName,
     required final String selectedGroupName,
-    final bool hasUnsavedChanges,
   }) = _$ConfigStateImpl;
   const _ConfigState._() : super._();
 
@@ -256,8 +234,6 @@ abstract class _ConfigState extends ConfigState {
   String get selectedFlavorName;
   @override
   String get selectedGroupName;
-  @override
-  bool get hasUnsavedChanges;
 
   /// Create a copy of ConfigState
   /// with the given fields replaced by the non-null parameter values.

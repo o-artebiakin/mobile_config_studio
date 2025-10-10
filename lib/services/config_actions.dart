@@ -386,21 +386,4 @@ class ConfigActions {
       ),
     );
   }
-
-  void saveConfig() {
-    // TODO: Implement actual save to persistent storage
-    final jsonData = jsonEncode(_state.toJson());
-    debugPrint('Save JSON: $jsonData');
-
-    // Mark as saved
-    ref.read(configProvider.notifier).markAsSaved();
-
-    ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(
-        content: Text('Configuration saved!'),
-        behavior: SnackBarBehavior.floating,
-        duration: Duration(seconds: 2),
-      ),
-    );
-  }
 }

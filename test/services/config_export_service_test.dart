@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:flutter_test/flutter_test.dart';
+
 import 'package:mobile_config_studio/models/config_flavor.dart';
 import 'package:mobile_config_studio/models/config_group.dart';
 import 'package:mobile_config_studio/models/config_key.dart';
@@ -31,7 +32,6 @@ void main() {
         ],
         selectedFlavorName: 'Development',
         selectedGroupName: 'General',
-        hasUnsavedChanges: false,
       );
     });
 

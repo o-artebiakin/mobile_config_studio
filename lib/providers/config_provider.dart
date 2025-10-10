@@ -23,7 +23,6 @@ class ConfigState with _$ConfigState {
     required List<ConfigFlavor> flavors,
     required String selectedFlavorName,
     required String selectedGroupName,
-    @Default(false) bool hasUnsavedChanges,
   }) = _ConfigState;
 
   factory ConfigState.initial() {
@@ -31,7 +30,6 @@ class ConfigState with _$ConfigState {
       flavors: [],
       selectedFlavorName: '',
       selectedGroupName: '',
-      hasUnsavedChanges: false,
     );
   }
 
@@ -52,6 +50,13 @@ class ConfigState with _$ConfigState {
         );
 
   List<ConfigKey> get selectedKeys => selectedGroup?.keys ?? [];
+
+  /// Get selected keys sorted alphabetically by key name (case-insensitive)
+  List<ConfigKey> get selectedKeysSorted {
+    final keys = selectedKeys;
+    return List<ConfigKey>.from(keys)
+      ..sort((a, b) => a.key.toLowerCase().compareTo(b.key.toLowerCase()));
+  }
 
   factory ConfigState.fromJson(Map<String, dynamic> json) =>
       _$ConfigStateFromJson(json);
@@ -89,7 +94,6 @@ class ConfigNotifier extends StateNotifier<ConfigState> {
         flavors: [...state.flavors, ConfigFlavor(name: name)],
         selectedFlavorName: isFirstFlavor ? name : state.selectedFlavorName,
         selectedGroupName: isFirstFlavor ? '' : state.selectedGroupName,
-        hasUnsavedChanges: true,
       );
     }
   }
@@ -112,7 +116,6 @@ class ConfigNotifier extends StateNotifier<ConfigState> {
       flavors: newFlavors,
       selectedFlavorName: newSelectedFlavor,
       selectedGroupName: newSelectedGroup,
-      hasUnsavedChanges: true,
     );
   }
 
@@ -140,7 +143,6 @@ class ConfigNotifier extends StateNotifier<ConfigState> {
     state = state.copyWith(
       flavors: updatedFlavors,
       selectedGroupName: isFirstGroup ? name : state.selectedGroupName,
-      hasUnsavedChanges: true,
     );
   }
 
@@ -162,7 +164,6 @@ class ConfigNotifier extends StateNotifier<ConfigState> {
     state = state.copyWith(
       flavors: updatedFlavors,
       selectedGroupName: newSelectedGroup,
-      hasUnsavedChanges: true,
     );
   }
 
@@ -187,7 +188,6 @@ class ConfigNotifier extends StateNotifier<ConfigState> {
 
     state = state.copyWith(
       flavors: updatedFlavors,
-      hasUnsavedChanges: true,
     );
   }
 
@@ -211,7 +211,6 @@ class ConfigNotifier extends StateNotifier<ConfigState> {
 
     state = state.copyWith(
       flavors: updatedFlavors,
-      hasUnsavedChanges: true,
     );
   }
 
@@ -234,7 +233,6 @@ class ConfigNotifier extends StateNotifier<ConfigState> {
 
     state = state.copyWith(
       flavors: updatedFlavors,
-      hasUnsavedChanges: true,
     );
   }
 
@@ -266,15 +264,10 @@ class ConfigNotifier extends StateNotifier<ConfigState> {
         flavors: flavors,
         selectedFlavorName: selectedFlavorName,
         selectedGroupName: selectedGroupName,
-        hasUnsavedChanges: false,
       );
     } catch (e) {
       debugPrint('Error loading config from JSON: $e');
     }
-  }
-
-  void markAsSaved() {
-    state = state.copyWith(hasUnsavedChanges: false);
   }
 
   void reset() {
