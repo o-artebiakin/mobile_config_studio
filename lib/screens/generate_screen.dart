@@ -1,7 +1,6 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
-
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
@@ -11,9 +10,10 @@ import '../services/generators/android_studio_config_generator.dart';
 import '../services/generators/command_line_generator.dart';
 import '../services/generators/confluence_doc_generator.dart';
 import '../services/generators/vscode_config_generator.dart';
-import '../utils/clipboard_helper.dart';
-import '../widgets/generate/command_controls_section.dart';
-import '../widgets/generate/output_section.dart';
+import '../widgets/generate/command_line_tab.dart';
+import '../widgets/generate/documentation_tab.dart';
+import '../widgets/generate/export_tab.dart';
+import '../widgets/generate/ide_configs_tab.dart';
 
 class GenerateScreen extends HookConsumerWidget {
   const GenerateScreen({super.key});
@@ -32,8 +32,8 @@ class GenerateScreen extends HookConsumerWidget {
     final commandLineOutput = useState<String>('');
     final confluenceOutput = useState<String>('');
     final vscodeConfigOutput = useState<String>('');
-    final androidStudioConfigOutput = useState<String>('');
-    
+    final androidStudioFiles = useState<Map<String, String>>({});
+
     // Command configuration
     final selectedCommand = useState<String>('run'); // 'run' or 'build'
     final selectedFlavor = useState<String?>(
@@ -55,104 +55,67 @@ class GenerateScreen extends HookConsumerWidget {
       );
       final confluence = confluenceGen.generate(state);
       final vscodeConfig = vscodeGen.generate(state);
-      final androidStudioConfig = androidStudioGen.generate(state);
+      final androidStudioFilesMap = androidStudioGen.generateAllFiles(state);
 
       jsonOutput.value = jsonString;
       base64Output.value = base64String;
       commandLineOutput.value = commandLine;
       confluenceOutput.value = confluence;
       vscodeConfigOutput.value = vscodeConfig;
-      androidStudioConfigOutput.value = androidStudioConfig;
+      androidStudioFiles.value = androidStudioFilesMap;
 
       return null;
     }, [state, selectedCommand.value, selectedFlavor.value, usePlaceholders.value]);
 
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('Generate Configuration'),
-        leading: IconButton(
-          icon: const Icon(Icons.close),
-          onPressed: () => Navigator.of(context).pop(),
+    return DefaultTabController(
+      length: 4,
+      child: Scaffold(
+        appBar: AppBar(
+          title: const Text('Generate Configuration'),
+          leading: IconButton(
+            icon: const Icon(Icons.close),
+            onPressed: () => Navigator.of(context).pop(),
+          ),
+          bottom: const TabBar(
+            tabs: [
+              Tab(icon: Icon(Icons.file_download), text: 'Export'),
+              Tab(icon: Icon(Icons.terminal), text: 'Command Line'),
+              Tab(icon: Icon(Icons.code), text: 'IDE Configs'),
+              Tab(icon: Icon(Icons.description), text: 'Documentation'),
+            ],
+          ),
         ),
-      ),
-      body: ListView(
-        padding: const EdgeInsets.all(16),
-        children: [
-          OutputSection(
-            title: 'JSON Configuration',
-            content: jsonOutput.value,
-            onCopy: () => ClipboardHelper.copyToClipboard(
-              context,
-              jsonOutput.value,
-              'JSON copied to clipboard',
+        body: TabBarView(
+          children: [
+            // Export Tab
+            ExportTab(
+              jsonOutput: jsonOutput.value,
+              base64Output: base64Output.value,
             ),
-            onDownload: () => ClipboardHelper.downloadJson(context, jsonOutput.value),
-          ),
-          const SizedBox(height: 24),
-          OutputSection(
-            title: 'Base64 Encoded',
-            content: base64Output.value,
-            onCopy: () => ClipboardHelper.copyToClipboard(
-              context,
-              base64Output.value,
-              'Base64 copied to clipboard',
-            ),
-          ),
-          const SizedBox(height: 24),
-          OutputSection(
-            title: 'Flutter Command Line',
-            content: commandLineOutput.value,
-            onCopy: () => ClipboardHelper.copyToClipboard(
-              context,
-              commandLineOutput.value,
-              'Command copied to clipboard',
-            ),
-            subtitle:
-                'Run this command to launch your Flutter app with this configuration',
-            extraControls: CommandControlsSection(
+
+            // Command Line Tab
+            CommandLineTab(
+              state: state,
               selectedCommand: selectedCommand,
               selectedFlavor: selectedFlavor,
               usePlaceholders: usePlaceholders,
-              availableFlavors: state.flavors.map((f) => f.name).toList(),
+              commandLineOutput: commandLineOutput.value,
             ),
-          ),
-          const SizedBox(height: 24),
-          OutputSection(
-            title: 'Confluence Documentation',
-            content: confluenceOutput.value,
-            onCopy: () => ClipboardHelper.copyToClipboard(
-              context,
-              confluenceOutput.value,
-              'Confluence markup copied to clipboard',
+
+            // IDE Configs Tab
+            IdeConfigsTab(
+              state: state,
+              vscodeConfigOutput: vscodeConfigOutput.value,
+              androidStudioFiles: androidStudioFiles.value,
+              selectedFlavor: selectedFlavor,
             ),
-            subtitle:
-                'Copy and paste this into Confluence for documentation',
-          ),
-          const SizedBox(height: 24),
-          OutputSection(
-            title: 'VS Code Launch Configuration',
-            content: vscodeConfigOutput.value,
-            onCopy: () => ClipboardHelper.copyToClipboard(
-              context,
-              vscodeConfigOutput.value,
-              'VS Code config copied to clipboard',
+
+            // Documentation Tab
+            DocumentationTab(
+              confluenceOutput: confluenceOutput.value,
             ),
-            subtitle:
-                'Add this to .vscode/launch.json in your Flutter project',
-          ),
-          const SizedBox(height: 24),
-          OutputSection(
-            title: 'Android Studio Run Configuration',
-            content: androidStudioConfigOutput.value,
-            onCopy: () => ClipboardHelper.copyToClipboard(
-              context,
-              androidStudioConfigOutput.value,
-              'Android Studio config copied to clipboard',
-            ),
-            subtitle:
-                'Use this as reference for Android Studio run configurations',
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }

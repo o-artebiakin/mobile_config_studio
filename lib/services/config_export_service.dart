@@ -1,6 +1,6 @@
 import 'dart:convert';
 
-import '../providers/config_provider.dart';
+import '../../providers/config_provider.dart';
 
 /// Service for exporting configuration data in various formats
 class ConfigExportService {

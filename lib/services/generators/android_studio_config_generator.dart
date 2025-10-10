@@ -1,61 +1,149 @@
+import '../../models/config_flavor.dart';
 import '../../providers/config_provider.dart';
 
 class AndroidStudioConfigGenerator {
+  /// Generate a single .run.xml file for a specific flavor
+  String generateRunXml(ConfigFlavor flavor) {
+    final buffer = StringBuffer();
+    
+    // XML header
+    buffer.writeln('<component name="ProjectRunConfigurationManager">');
+    buffer.writeln('  <configuration default="false" name="Flutter (${flavor.name})" type="FlutterRunConfigurationType" factoryName="Flutter">');
+    
+    // Build additionalArgs string
+    final dartDefines = <String>[];
+    for (final group in flavor.groups) {
+      for (final key in group.keys) {
+        final formattedKey = _formatKey(group.name, key.key);
+        dartDefines.add('--dart-define=$formattedKey=${key.value}');
+      }
+    }
+    
+    if (dartDefines.isNotEmpty) {
+      buffer.writeln('    <option name="additionalArgs" value="${dartDefines.join(' ')}" />');
+    }
+    
+    // Build flavor (exact name)
+    buffer.writeln('    <option name="buildFlavor" value="${flavor.name}" />');
+    
+    // File path
+    buffer.writeln('    <option name="filePath" value="\$PROJECT_DIR\$/lib/main.dart" />');
+    
+    // Close configuration
+    buffer.writeln('    <method v="2" />');
+    buffer.writeln('  </configuration>');
+    buffer.writeln('</component>');
+    
+    return buffer.toString();
+  }
+
+  /// Generate instructions for all flavors (legacy format)
   String generate(ConfigState state) {
     final buffer = StringBuffer();
 
-    buffer.writeln('# Android Studio Run Configurations');
+    buffer.writeln('# Android Studio Run Configurations (.run.xml files)');
     buffer.writeln('');
-    buffer.writeln('To create run configurations in Android Studio:');
+    buffer.writeln('Copy the XML content below for each flavor to:');
+    buffer.writeln('`.run/Flutter (FlavorName).run.xml`');
     buffer.writeln('');
-    buffer.writeln('1. Go to Run > Edit Configurations...');
-    buffer.writeln('2. Click "+" and select "Flutter"');
-    buffer.writeln('3. Configure as follows:');
+    buffer.writeln('---');
     buffer.writeln('');
 
     for (final flavor in state.flavors) {
-      buffer.writeln('## Configuration: ${flavor.name}');
+      buffer.writeln('## Flutter (${flavor.name}).run.xml');
       buffer.writeln('');
-      buffer.writeln('**Name:** Flutter (${flavor.name})');
-      buffer.writeln('**Dart entrypoint:** lib/main.dart');
-      buffer.writeln('**Build flavor:** ${flavor.name.toLowerCase()}');
-      buffer.writeln('');
-      buffer.writeln('**Additional run args:**');
-      buffer.writeln('```');
-
-      for (final group in flavor.groups) {
-        for (final key in group.keys) {
-          buffer.writeln('--dart-define=${key.key}=${key.value}');
-        }
-      }
-
+      buffer.writeln('```xml');
+      buffer.write(generateRunXml(flavor));
       buffer.writeln('```');
       buffer.writeln('');
       buffer.writeln('---');
       buffer.writeln('');
     }
 
-    buffer.writeln('## Alternative: Command Line');
-    buffer.writeln('');
-    buffer.writeln('You can also run directly from the terminal:');
-    buffer.writeln('');
+    return buffer.toString();
+  }
 
+  /// Generate a map of filename -> content for all flavors
+  /// Useful for downloading as separate files
+  Map<String, String> generateAllFiles(ConfigState state) {
+    final files = <String, String>{};
+    
     for (final flavor in state.flavors) {
-      buffer.writeln('### ${flavor.name}:');
-      buffer.writeln('```bash');
-      buffer.write('flutter run --flavor ${flavor.name.toLowerCase()}');
+      final filename = 'Flutter (${flavor.name}).run.xml';
+      files[filename] = generateRunXml(flavor);
+    }
+    
+    return files;
+  }
 
-      for (final group in flavor.groups) {
-        for (final key in group.keys) {
-          buffer.write(' \\\n  --dart-define=${key.key}=${key.value}');
-        }
-      }
-
+  /// Generate a single downloadable file with instructions
+  String generateDownloadableInstructions(ConfigState state) {
+    final buffer = StringBuffer();
+    
+    buffer.writeln('═══════════════════════════════════════════════════════════');
+    buffer.writeln('Android Studio Run Configurations - Setup Instructions');
+    buffer.writeln('═══════════════════════════════════════════════════════════');
+    buffer.writeln('');
+    buffer.writeln('STEP 1: Create the .run folder');
+    buffer.writeln('  - In your project root, create a folder named: .run');
+    buffer.writeln('  - This folder will contain all run configurations');
+    buffer.writeln('');
+    buffer.writeln('STEP 2: Create individual XML files');
+    buffer.writeln('  - Copy each configuration below to its respective file');
+    buffer.writeln('  - File names are specified in the headers');
+    buffer.writeln('');
+    buffer.writeln('STEP 3: Restart Android Studio');
+    buffer.writeln('  - Configurations will appear in the run dropdown');
+    buffer.writeln('');
+    buffer.writeln('═══════════════════════════════════════════════════════════');
+    buffer.writeln('');
+    
+    for (final flavor in state.flavors) {
+      final filename = 'Flutter (${flavor.name}).run.xml';
       buffer.writeln('');
-      buffer.writeln('```');
+      buffer.writeln('┌─────────────────────────────────────────────────────────┐');
+      buffer.writeln('│ FILE: .run/$filename');
+      buffer.writeln('└─────────────────────────────────────────────────────────┘');
+      buffer.writeln('');
+      buffer.writeln(generateRunXml(flavor));
+      buffer.writeln('');
+      buffer.writeln('─────────────────────────────────────────────────────────');
       buffer.writeln('');
     }
-
+    
+    buffer.writeln('');
+    buffer.writeln('═══════════════════════════════════════════════════════════');
+    buffer.writeln('End of Configurations');
+    buffer.writeln('═══════════════════════════════════════════════════════════');
+    
     return buffer.toString();
+  }
+
+  /// Formats the key as uppercase snake case with group name prefix
+  /// Example: group="Auth0", key="audience" -> "AUTH0_AUDIENCE"
+  String _formatKey(String groupName, String keyName) {
+    final formattedGroup = _toSnakeCase(groupName).toUpperCase();
+    final formattedKey = _toSnakeCase(keyName).toUpperCase();
+    return '${formattedGroup}_$formattedKey';
+  }
+
+  /// Converts a string to snake_case
+  String _toSnakeCase(String input) {
+    // Replace spaces and hyphens with underscores
+    String result = input.replaceAll(RegExp(r'[\s-]+'), '_');
+    
+    // Insert underscore before capital letters (for camelCase)
+    result = result.replaceAllMapped(
+      RegExp(r'([a-z0-9])([A-Z])'),
+      (match) => '${match.group(1)}_${match.group(2)}',
+    );
+    
+    // Remove any duplicate underscores
+    result = result.replaceAll(RegExp(r'_+'), '_');
+    
+    // Remove leading/trailing underscores
+    result = result.replaceAll(RegExp(r'^_+|_+$'), '');
+    
+    return result;
   }
 }
