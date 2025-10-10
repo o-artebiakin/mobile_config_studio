@@ -9,6 +9,7 @@ import '../services/config_export_service.dart';
 import '../services/generators/android_studio_config_generator.dart';
 import '../services/generators/command_line_generator.dart';
 import '../services/generators/confluence_doc_generator.dart';
+import '../services/generators/env_dart_generator.dart';
 import '../services/generators/vscode_config_generator.dart';
 import '../widgets/generate/command_line_tab.dart';
 import '../widgets/generate/documentation_tab.dart';
@@ -26,6 +27,7 @@ class GenerateScreen extends HookConsumerWidget {
     final confluenceGen = ConfluenceDocGenerator();
     final vscodeGen = VSCodeConfigGenerator();
     final androidStudioGen = AndroidStudioConfigGenerator();
+    final envDartGen = EnvDartGenerator();
 
     final jsonOutput = useState<String>('');
     final base64Output = useState<String>('');
@@ -33,6 +35,7 @@ class GenerateScreen extends HookConsumerWidget {
     final confluenceOutput = useState<String>('');
     final vscodeConfigOutput = useState<String>('');
     final androidStudioFiles = useState<Map<String, String>>({});
+    final envDartOutput = useState<String>('');
 
     // Command configuration
     final selectedCommand = useState<String>('run'); // 'run' or 'build'
@@ -56,6 +59,7 @@ class GenerateScreen extends HookConsumerWidget {
       final confluence = confluenceGen.generate(state);
       final vscodeConfig = vscodeGen.generate(state);
       final androidStudioFilesMap = androidStudioGen.generateAllFiles(state);
+      final envDart = envDartGen.generate(state);
 
       jsonOutput.value = jsonString;
       base64Output.value = base64String;
@@ -63,6 +67,7 @@ class GenerateScreen extends HookConsumerWidget {
       confluenceOutput.value = confluence;
       vscodeConfigOutput.value = vscodeConfig;
       androidStudioFiles.value = androidStudioFilesMap;
+      envDartOutput.value = envDart;
 
       return null;
     }, [state, selectedCommand.value, selectedFlavor.value, usePlaceholders.value]);
@@ -79,7 +84,7 @@ class GenerateScreen extends HookConsumerWidget {
           bottom: const TabBar(
             tabs: [
               Tab(icon: Icon(Icons.file_download), text: 'Export'),
-              Tab(icon: Icon(Icons.terminal), text: 'Command Line'),
+              Tab(icon: Icon(Icons.terminal), text: 'CLI & Env'),
               Tab(icon: Icon(Icons.code), text: 'IDE Configs'),
               Tab(icon: Icon(Icons.description), text: 'Documentation'),
             ],
@@ -100,6 +105,7 @@ class GenerateScreen extends HookConsumerWidget {
               selectedFlavor: selectedFlavor,
               usePlaceholders: usePlaceholders,
               commandLineOutput: commandLineOutput.value,
+              envDartOutput: envDartOutput.value,
             ),
 
             // IDE Configs Tab
