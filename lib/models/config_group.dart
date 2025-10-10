@@ -10,8 +10,16 @@ class ConfigGroup with _$ConfigGroup {
   const factory ConfigGroup({
     required String name,
     @Default([]) List<ConfigKey> keys,
+    required DateTime createdAt,
+    required DateTime updatedAt,
   }) = _ConfigGroup;
 
-  factory ConfigGroup.fromJson(Map<String, dynamic> json) =>
-      _$ConfigGroupFromJson(json);
+  factory ConfigGroup.fromJson(Map<String, dynamic> json) {
+    final placeholderDate = DateTime(0);
+    return _$ConfigGroupFromJson({
+      ...json,
+      'createdAt': json['createdAt'] ?? placeholderDate.toIso8601String(),
+      'updatedAt': json['updatedAt'] ?? placeholderDate.toIso8601String(),
+    });
+  }
 }

@@ -27,7 +27,7 @@ class CommandLineGenerator {
         (f) => f.name == flavor,
         orElse: () => state.flavors.isNotEmpty
             ? state.flavors.first
-            : ConfigFlavor(name: '', groups: []),
+            : ConfigFlavor(name: '', groups: [], createdAt: DateTime(0), updatedAt: DateTime(0)),
       );
 
       for (final group in selectedFlavor.groups) {

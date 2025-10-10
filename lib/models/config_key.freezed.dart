@@ -23,6 +23,8 @@ ConfigKey _$ConfigKeyFromJson(Map<String, dynamic> json) {
 mixin _$ConfigKey {
   String get key => throw _privateConstructorUsedError;
   String get value => throw _privateConstructorUsedError;
+  DateTime get createdAt => throw _privateConstructorUsedError;
+  DateTime get updatedAt => throw _privateConstructorUsedError;
 
   /// Serializes this ConfigKey to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
@@ -39,7 +41,7 @@ abstract class $ConfigKeyCopyWith<$Res> {
   factory $ConfigKeyCopyWith(ConfigKey value, $Res Function(ConfigKey) then) =
       _$ConfigKeyCopyWithImpl<$Res, ConfigKey>;
   @useResult
-  $Res call({String key, String value});
+  $Res call({String key, String value, DateTime createdAt, DateTime updatedAt});
 }
 
 /// @nodoc
@@ -56,7 +58,12 @@ class _$ConfigKeyCopyWithImpl<$Res, $Val extends ConfigKey>
   /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
-  $Res call({Object? key = null, Object? value = null}) {
+  $Res call({
+    Object? key = null,
+    Object? value = null,
+    Object? createdAt = null,
+    Object? updatedAt = null,
+  }) {
     return _then(
       _value.copyWith(
             key: null == key
@@ -67,6 +74,14 @@ class _$ConfigKeyCopyWithImpl<$Res, $Val extends ConfigKey>
                 ? _value.value
                 : value // ignore: cast_nullable_to_non_nullable
                       as String,
+            createdAt: null == createdAt
+                ? _value.createdAt
+                : createdAt // ignore: cast_nullable_to_non_nullable
+                      as DateTime,
+            updatedAt: null == updatedAt
+                ? _value.updatedAt
+                : updatedAt // ignore: cast_nullable_to_non_nullable
+                      as DateTime,
           )
           as $Val,
     );
@@ -82,7 +97,7 @@ abstract class _$$ConfigKeyImplCopyWith<$Res>
   ) = __$$ConfigKeyImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({String key, String value});
+  $Res call({String key, String value, DateTime createdAt, DateTime updatedAt});
 }
 
 /// @nodoc
@@ -98,7 +113,12 @@ class __$$ConfigKeyImplCopyWithImpl<$Res>
   /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
-  $Res call({Object? key = null, Object? value = null}) {
+  $Res call({
+    Object? key = null,
+    Object? value = null,
+    Object? createdAt = null,
+    Object? updatedAt = null,
+  }) {
     return _then(
       _$ConfigKeyImpl(
         key: null == key
@@ -109,6 +129,14 @@ class __$$ConfigKeyImplCopyWithImpl<$Res>
             ? _value.value
             : value // ignore: cast_nullable_to_non_nullable
                   as String,
+        createdAt: null == createdAt
+            ? _value.createdAt
+            : createdAt // ignore: cast_nullable_to_non_nullable
+                  as DateTime,
+        updatedAt: null == updatedAt
+            ? _value.updatedAt
+            : updatedAt // ignore: cast_nullable_to_non_nullable
+                  as DateTime,
       ),
     );
   }
@@ -116,8 +144,13 @@ class __$$ConfigKeyImplCopyWithImpl<$Res>
 
 /// @nodoc
 @JsonSerializable()
-class _$ConfigKeyImpl implements _ConfigKey {
-  const _$ConfigKeyImpl({required this.key, required this.value});
+class _$ConfigKeyImpl extends _ConfigKey {
+  const _$ConfigKeyImpl({
+    required this.key,
+    required this.value,
+    required this.createdAt,
+    required this.updatedAt,
+  }) : super._();
 
   factory _$ConfigKeyImpl.fromJson(Map<String, dynamic> json) =>
       _$$ConfigKeyImplFromJson(json);
@@ -126,10 +159,14 @@ class _$ConfigKeyImpl implements _ConfigKey {
   final String key;
   @override
   final String value;
+  @override
+  final DateTime createdAt;
+  @override
+  final DateTime updatedAt;
 
   @override
   String toString() {
-    return 'ConfigKey(key: $key, value: $value)';
+    return 'ConfigKey(key: $key, value: $value, createdAt: $createdAt, updatedAt: $updatedAt)';
   }
 
   @override
@@ -138,12 +175,17 @@ class _$ConfigKeyImpl implements _ConfigKey {
         (other.runtimeType == runtimeType &&
             other is _$ConfigKeyImpl &&
             (identical(other.key, key) || other.key == key) &&
-            (identical(other.value, value) || other.value == value));
+            (identical(other.value, value) || other.value == value) &&
+            (identical(other.createdAt, createdAt) ||
+                other.createdAt == createdAt) &&
+            (identical(other.updatedAt, updatedAt) ||
+                other.updatedAt == updatedAt));
   }
 
   @JsonKey(includeFromJson: false, includeToJson: false)
   @override
-  int get hashCode => Object.hash(runtimeType, key, value);
+  int get hashCode =>
+      Object.hash(runtimeType, key, value, createdAt, updatedAt);
 
   /// Create a copy of ConfigKey
   /// with the given fields replaced by the non-null parameter values.
@@ -159,11 +201,14 @@ class _$ConfigKeyImpl implements _ConfigKey {
   }
 }
 
-abstract class _ConfigKey implements ConfigKey {
+abstract class _ConfigKey extends ConfigKey {
   const factory _ConfigKey({
     required final String key,
     required final String value,
+    required final DateTime createdAt,
+    required final DateTime updatedAt,
   }) = _$ConfigKeyImpl;
+  const _ConfigKey._() : super._();
 
   factory _ConfigKey.fromJson(Map<String, dynamic> json) =
       _$ConfigKeyImpl.fromJson;
@@ -172,6 +217,10 @@ abstract class _ConfigKey implements ConfigKey {
   String get key;
   @override
   String get value;
+  @override
+  DateTime get createdAt;
+  @override
+  DateTime get updatedAt;
 
   /// Create a copy of ConfigKey
   /// with the given fields replaced by the non-null parameter values.

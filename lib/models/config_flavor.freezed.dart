@@ -23,6 +23,8 @@ ConfigFlavor _$ConfigFlavorFromJson(Map<String, dynamic> json) {
 mixin _$ConfigFlavor {
   String get name => throw _privateConstructorUsedError;
   List<ConfigGroup> get groups => throw _privateConstructorUsedError;
+  DateTime get createdAt => throw _privateConstructorUsedError;
+  DateTime get updatedAt => throw _privateConstructorUsedError;
 
   /// Serializes this ConfigFlavor to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
@@ -41,7 +43,12 @@ abstract class $ConfigFlavorCopyWith<$Res> {
     $Res Function(ConfigFlavor) then,
   ) = _$ConfigFlavorCopyWithImpl<$Res, ConfigFlavor>;
   @useResult
-  $Res call({String name, List<ConfigGroup> groups});
+  $Res call({
+    String name,
+    List<ConfigGroup> groups,
+    DateTime createdAt,
+    DateTime updatedAt,
+  });
 }
 
 /// @nodoc
@@ -58,7 +65,12 @@ class _$ConfigFlavorCopyWithImpl<$Res, $Val extends ConfigFlavor>
   /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
-  $Res call({Object? name = null, Object? groups = null}) {
+  $Res call({
+    Object? name = null,
+    Object? groups = null,
+    Object? createdAt = null,
+    Object? updatedAt = null,
+  }) {
     return _then(
       _value.copyWith(
             name: null == name
@@ -69,6 +81,14 @@ class _$ConfigFlavorCopyWithImpl<$Res, $Val extends ConfigFlavor>
                 ? _value.groups
                 : groups // ignore: cast_nullable_to_non_nullable
                       as List<ConfigGroup>,
+            createdAt: null == createdAt
+                ? _value.createdAt
+                : createdAt // ignore: cast_nullable_to_non_nullable
+                      as DateTime,
+            updatedAt: null == updatedAt
+                ? _value.updatedAt
+                : updatedAt // ignore: cast_nullable_to_non_nullable
+                      as DateTime,
           )
           as $Val,
     );
@@ -84,7 +104,12 @@ abstract class _$$ConfigFlavorImplCopyWith<$Res>
   ) = __$$ConfigFlavorImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({String name, List<ConfigGroup> groups});
+  $Res call({
+    String name,
+    List<ConfigGroup> groups,
+    DateTime createdAt,
+    DateTime updatedAt,
+  });
 }
 
 /// @nodoc
@@ -100,7 +125,12 @@ class __$$ConfigFlavorImplCopyWithImpl<$Res>
   /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
-  $Res call({Object? name = null, Object? groups = null}) {
+  $Res call({
+    Object? name = null,
+    Object? groups = null,
+    Object? createdAt = null,
+    Object? updatedAt = null,
+  }) {
     return _then(
       _$ConfigFlavorImpl(
         name: null == name
@@ -111,6 +141,14 @@ class __$$ConfigFlavorImplCopyWithImpl<$Res>
             ? _value._groups
             : groups // ignore: cast_nullable_to_non_nullable
                   as List<ConfigGroup>,
+        createdAt: null == createdAt
+            ? _value.createdAt
+            : createdAt // ignore: cast_nullable_to_non_nullable
+                  as DateTime,
+        updatedAt: null == updatedAt
+            ? _value.updatedAt
+            : updatedAt // ignore: cast_nullable_to_non_nullable
+                  as DateTime,
       ),
     );
   }
@@ -118,11 +156,14 @@ class __$$ConfigFlavorImplCopyWithImpl<$Res>
 
 /// @nodoc
 @JsonSerializable()
-class _$ConfigFlavorImpl implements _ConfigFlavor {
+class _$ConfigFlavorImpl extends _ConfigFlavor {
   const _$ConfigFlavorImpl({
     required this.name,
     final List<ConfigGroup> groups = const [],
-  }) : _groups = groups;
+    required this.createdAt,
+    required this.updatedAt,
+  }) : _groups = groups,
+       super._();
 
   factory _$ConfigFlavorImpl.fromJson(Map<String, dynamic> json) =>
       _$$ConfigFlavorImplFromJson(json);
@@ -139,8 +180,13 @@ class _$ConfigFlavorImpl implements _ConfigFlavor {
   }
 
   @override
+  final DateTime createdAt;
+  @override
+  final DateTime updatedAt;
+
+  @override
   String toString() {
-    return 'ConfigFlavor(name: $name, groups: $groups)';
+    return 'ConfigFlavor(name: $name, groups: $groups, createdAt: $createdAt, updatedAt: $updatedAt)';
   }
 
   @override
@@ -149,7 +195,11 @@ class _$ConfigFlavorImpl implements _ConfigFlavor {
         (other.runtimeType == runtimeType &&
             other is _$ConfigFlavorImpl &&
             (identical(other.name, name) || other.name == name) &&
-            const DeepCollectionEquality().equals(other._groups, _groups));
+            const DeepCollectionEquality().equals(other._groups, _groups) &&
+            (identical(other.createdAt, createdAt) ||
+                other.createdAt == createdAt) &&
+            (identical(other.updatedAt, updatedAt) ||
+                other.updatedAt == updatedAt));
   }
 
   @JsonKey(includeFromJson: false, includeToJson: false)
@@ -158,6 +208,8 @@ class _$ConfigFlavorImpl implements _ConfigFlavor {
     runtimeType,
     name,
     const DeepCollectionEquality().hash(_groups),
+    createdAt,
+    updatedAt,
   );
 
   /// Create a copy of ConfigFlavor
@@ -174,11 +226,14 @@ class _$ConfigFlavorImpl implements _ConfigFlavor {
   }
 }
 
-abstract class _ConfigFlavor implements ConfigFlavor {
+abstract class _ConfigFlavor extends ConfigFlavor {
   const factory _ConfigFlavor({
     required final String name,
     final List<ConfigGroup> groups,
+    required final DateTime createdAt,
+    required final DateTime updatedAt,
   }) = _$ConfigFlavorImpl;
+  const _ConfigFlavor._() : super._();
 
   factory _ConfigFlavor.fromJson(Map<String, dynamic> json) =
       _$ConfigFlavorImpl.fromJson;
@@ -187,6 +242,10 @@ abstract class _ConfigFlavor implements ConfigFlavor {
   String get name;
   @override
   List<ConfigGroup> get groups;
+  @override
+  DateTime get createdAt;
+  @override
+  DateTime get updatedAt;
 
   /// Create a copy of ConfigFlavor
   /// with the given fields replaced by the non-null parameter values.

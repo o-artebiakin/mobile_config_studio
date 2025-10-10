@@ -1,4 +1,5 @@
 import 'package:flutter/foundation.dart';
+
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
@@ -90,8 +91,9 @@ class ConfigNotifier extends StateNotifier<ConfigState> {
   void addFlavor(String name) {
     if (!state.flavors.any((f) => f.name == name)) {
       final isFirstFlavor = state.flavors.isEmpty;
+      final now = DateTime.now();
       state = state.copyWith(
-        flavors: [...state.flavors, ConfigFlavor(name: name)],
+        flavors: [...state.flavors, ConfigFlavor(name: name, createdAt: now, updatedAt: now)],
         selectedFlavorName: isFirstFlavor ? name : state.selectedFlavorName,
         selectedGroupName: isFirstFlavor ? '' : state.selectedGroupName,
       );
@@ -135,9 +137,11 @@ class ConfigNotifier extends StateNotifier<ConfigState> {
     if (flavor.groups.any((g) => g.name == name)) return;
 
     final isFirstGroup = flavor.groups.isEmpty;
+    final now = DateTime.now();
     final updatedFlavors = [...state.flavors];
     updatedFlavors[flavorIndex] = flavor.copyWith(
-      groups: [...flavor.groups, ConfigGroup(name: name)],
+      groups: [...flavor.groups, ConfigGroup(name: name, createdAt: now, updatedAt: now)],
+      updatedAt: now,
     );
 
     state = state.copyWith(
@@ -159,7 +163,10 @@ class ConfigNotifier extends StateNotifier<ConfigState> {
             : state.selectedGroupName);
 
     final updatedFlavors = [...state.flavors];
-    updatedFlavors[flavorIndex] = flavor.copyWith(groups: newGroups);
+    updatedFlavors[flavorIndex] = flavor.copyWith(
+      groups: newGroups,
+      updatedAt: DateTime.now(),
+    );
 
     state = state.copyWith(
       flavors: updatedFlavors,
@@ -169,7 +176,8 @@ class ConfigNotifier extends StateNotifier<ConfigState> {
 
   // ===== Key Methods =====
 
-  void addKey(String groupName, ConfigKey key) {
+  /// Add a new key with automatic timestamp creation
+  void addKey(String groupName, String key, String value) {
     final flavorIndex = state.flavors.indexWhere((f) => f.name == state.selectedFlavorName);
     if (flavorIndex == -1) return;
 
@@ -177,21 +185,34 @@ class ConfigNotifier extends StateNotifier<ConfigState> {
     final groupIndex = flavor.groups.indexWhere((g) => g.name == groupName);
     if (groupIndex == -1) return;
 
+    final now = DateTime.now();
+    final configKey = ConfigKey(
+      key: key,
+      value: value,
+      createdAt: now,
+      updatedAt: now,
+    );
+
     final group = flavor.groups[groupIndex];
     final updatedGroups = [...flavor.groups];
     updatedGroups[groupIndex] = group.copyWith(
-      keys: [...group.keys, key],
+      keys: [...group.keys, configKey],
+      updatedAt: now,
     );
 
     final updatedFlavors = [...state.flavors];
-    updatedFlavors[flavorIndex] = flavor.copyWith(groups: updatedGroups);
+    updatedFlavors[flavorIndex] = flavor.copyWith(
+      groups: updatedGroups,
+      updatedAt: now,
+    );
 
     state = state.copyWith(
       flavors: updatedFlavors,
     );
   }
 
-  void updateKey(String groupName, int keyIndex, ConfigKey updatedKey) {
+  /// Update an existing key, preserving createdAt and updating updatedAt
+  void updateKey(String groupName, int keyIndex, String newKey, String newValue) {
     final flavorIndex = state.flavors.indexWhere((f) => f.name == state.selectedFlavorName);
     if (flavorIndex == -1) return;
 
@@ -200,14 +221,27 @@ class ConfigNotifier extends StateNotifier<ConfigState> {
     if (groupIndex == -1) return;
 
     final group = flavor.groups[groupIndex];
+    final oldKey = group.keys[keyIndex];
+    final now = DateTime.now();
     final updatedKeys = [...group.keys];
-    updatedKeys[keyIndex] = updatedKey;
+    updatedKeys[keyIndex] = ConfigKey(
+      key: newKey,
+      value: newValue,
+      createdAt: oldKey.createdAt,  // Preserve creation time
+      updatedAt: now,     // Update modification time
+    );
 
     final updatedGroups = [...flavor.groups];
-    updatedGroups[groupIndex] = group.copyWith(keys: updatedKeys);
+    updatedGroups[groupIndex] = group.copyWith(
+      keys: updatedKeys,
+      updatedAt: now,
+    );
 
     final updatedFlavors = [...state.flavors];
-    updatedFlavors[flavorIndex] = flavor.copyWith(groups: updatedGroups);
+    updatedFlavors[flavorIndex] = flavor.copyWith(
+      groups: updatedGroups,
+      updatedAt: now,
+    );
 
     state = state.copyWith(
       flavors: updatedFlavors,
@@ -223,13 +257,18 @@ class ConfigNotifier extends StateNotifier<ConfigState> {
     if (groupIndex == -1) return;
 
     final group = flavor.groups[groupIndex];
+    final now = DateTime.now();
     final updatedGroups = [...flavor.groups];
     updatedGroups[groupIndex] = group.copyWith(
       keys: group.keys.where((k) => k != key).toList(),
+      updatedAt: now,
     );
 
     final updatedFlavors = [...state.flavors];
-    updatedFlavors[flavorIndex] = flavor.copyWith(groups: updatedGroups);
+    updatedFlavors[flavorIndex] = flavor.copyWith(
+      groups: updatedGroups,
+      updatedAt: now,
+    );
 
     state = state.copyWith(
       flavors: updatedFlavors,

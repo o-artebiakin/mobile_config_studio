@@ -15,6 +15,7 @@ void main() {
 
     setUp(() {
       service = ConfigExportService();
+      final now = DateTime.now();
       testState = ConfigState(
         flavors: [
           ConfigFlavor(
@@ -23,11 +24,15 @@ void main() {
               ConfigGroup(
                 name: 'General',
                 keys: [
-                  const ConfigKey(key: 'app_name', value: 'Test App'),
-                  const ConfigKey(key: 'version', value: '1.0.0'),
+                  ConfigKey(key: 'app_name', value: 'Test App', createdAt: now, updatedAt: now),
+                  ConfigKey(key: 'version', value: '1.0.0', createdAt: now, updatedAt: now),
                 ],
+                createdAt: now,
+                updatedAt: now,
               ),
             ],
+            createdAt: now,
+            updatedAt: now,
           ),
         ],
         selectedFlavorName: 'Development',

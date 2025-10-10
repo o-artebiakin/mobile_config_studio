@@ -7,7 +7,6 @@ import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
-import '../models/config_key.dart';
 import '../providers/config_provider.dart';
 
 class ConfigActions {
@@ -369,7 +368,8 @@ class ConfigActions {
                 final keyName = keyController.text.trim();
                 _notifier.addKey(
                   _state.selectedGroupName,
-                  ConfigKey(key: keyName, value: valueController.text.trim()),
+                  keyName,
+                  valueController.text.trim(),
                 );
                 Navigator.pop(context);
                 ScaffoldMessenger.of(context).showSnackBar(

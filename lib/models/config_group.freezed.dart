@@ -23,6 +23,8 @@ ConfigGroup _$ConfigGroupFromJson(Map<String, dynamic> json) {
 mixin _$ConfigGroup {
   String get name => throw _privateConstructorUsedError;
   List<ConfigKey> get keys => throw _privateConstructorUsedError;
+  DateTime get createdAt => throw _privateConstructorUsedError;
+  DateTime get updatedAt => throw _privateConstructorUsedError;
 
   /// Serializes this ConfigGroup to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
@@ -41,7 +43,12 @@ abstract class $ConfigGroupCopyWith<$Res> {
     $Res Function(ConfigGroup) then,
   ) = _$ConfigGroupCopyWithImpl<$Res, ConfigGroup>;
   @useResult
-  $Res call({String name, List<ConfigKey> keys});
+  $Res call({
+    String name,
+    List<ConfigKey> keys,
+    DateTime createdAt,
+    DateTime updatedAt,
+  });
 }
 
 /// @nodoc
@@ -58,7 +65,12 @@ class _$ConfigGroupCopyWithImpl<$Res, $Val extends ConfigGroup>
   /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
-  $Res call({Object? name = null, Object? keys = null}) {
+  $Res call({
+    Object? name = null,
+    Object? keys = null,
+    Object? createdAt = null,
+    Object? updatedAt = null,
+  }) {
     return _then(
       _value.copyWith(
             name: null == name
@@ -69,6 +81,14 @@ class _$ConfigGroupCopyWithImpl<$Res, $Val extends ConfigGroup>
                 ? _value.keys
                 : keys // ignore: cast_nullable_to_non_nullable
                       as List<ConfigKey>,
+            createdAt: null == createdAt
+                ? _value.createdAt
+                : createdAt // ignore: cast_nullable_to_non_nullable
+                      as DateTime,
+            updatedAt: null == updatedAt
+                ? _value.updatedAt
+                : updatedAt // ignore: cast_nullable_to_non_nullable
+                      as DateTime,
           )
           as $Val,
     );
@@ -84,7 +104,12 @@ abstract class _$$ConfigGroupImplCopyWith<$Res>
   ) = __$$ConfigGroupImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({String name, List<ConfigKey> keys});
+  $Res call({
+    String name,
+    List<ConfigKey> keys,
+    DateTime createdAt,
+    DateTime updatedAt,
+  });
 }
 
 /// @nodoc
@@ -100,7 +125,12 @@ class __$$ConfigGroupImplCopyWithImpl<$Res>
   /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
-  $Res call({Object? name = null, Object? keys = null}) {
+  $Res call({
+    Object? name = null,
+    Object? keys = null,
+    Object? createdAt = null,
+    Object? updatedAt = null,
+  }) {
     return _then(
       _$ConfigGroupImpl(
         name: null == name
@@ -111,6 +141,14 @@ class __$$ConfigGroupImplCopyWithImpl<$Res>
             ? _value._keys
             : keys // ignore: cast_nullable_to_non_nullable
                   as List<ConfigKey>,
+        createdAt: null == createdAt
+            ? _value.createdAt
+            : createdAt // ignore: cast_nullable_to_non_nullable
+                  as DateTime,
+        updatedAt: null == updatedAt
+            ? _value.updatedAt
+            : updatedAt // ignore: cast_nullable_to_non_nullable
+                  as DateTime,
       ),
     );
   }
@@ -122,6 +160,8 @@ class _$ConfigGroupImpl implements _ConfigGroup {
   const _$ConfigGroupImpl({
     required this.name,
     final List<ConfigKey> keys = const [],
+    required this.createdAt,
+    required this.updatedAt,
   }) : _keys = keys;
 
   factory _$ConfigGroupImpl.fromJson(Map<String, dynamic> json) =>
@@ -139,8 +179,13 @@ class _$ConfigGroupImpl implements _ConfigGroup {
   }
 
   @override
+  final DateTime createdAt;
+  @override
+  final DateTime updatedAt;
+
+  @override
   String toString() {
-    return 'ConfigGroup(name: $name, keys: $keys)';
+    return 'ConfigGroup(name: $name, keys: $keys, createdAt: $createdAt, updatedAt: $updatedAt)';
   }
 
   @override
@@ -149,7 +194,11 @@ class _$ConfigGroupImpl implements _ConfigGroup {
         (other.runtimeType == runtimeType &&
             other is _$ConfigGroupImpl &&
             (identical(other.name, name) || other.name == name) &&
-            const DeepCollectionEquality().equals(other._keys, _keys));
+            const DeepCollectionEquality().equals(other._keys, _keys) &&
+            (identical(other.createdAt, createdAt) ||
+                other.createdAt == createdAt) &&
+            (identical(other.updatedAt, updatedAt) ||
+                other.updatedAt == updatedAt));
   }
 
   @JsonKey(includeFromJson: false, includeToJson: false)
@@ -158,6 +207,8 @@ class _$ConfigGroupImpl implements _ConfigGroup {
     runtimeType,
     name,
     const DeepCollectionEquality().hash(_keys),
+    createdAt,
+    updatedAt,
   );
 
   /// Create a copy of ConfigGroup
@@ -178,6 +229,8 @@ abstract class _ConfigGroup implements ConfigGroup {
   const factory _ConfigGroup({
     required final String name,
     final List<ConfigKey> keys,
+    required final DateTime createdAt,
+    required final DateTime updatedAt,
   }) = _$ConfigGroupImpl;
 
   factory _ConfigGroup.fromJson(Map<String, dynamic> json) =
@@ -187,6 +240,10 @@ abstract class _ConfigGroup implements ConfigGroup {
   String get name;
   @override
   List<ConfigKey> get keys;
+  @override
+  DateTime get createdAt;
+  @override
+  DateTime get updatedAt;
 
   /// Create a copy of ConfigGroup
   /// with the given fields replaced by the non-null parameter values.

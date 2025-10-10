@@ -122,7 +122,11 @@ class _KeysPanelState extends ConsumerState<KeysPanel> {
       return;
     }
 
-    notifier.addKey(state.selectedGroupName, ConfigKey(key: key, value: value));
+    notifier.addKey(
+      state.selectedGroupName,
+      key,
+      value,
+    );
 
     // Create a GlobalKey for the new item
     final itemKey = GlobalKey();
@@ -197,7 +201,8 @@ class _KeysPanelState extends ConsumerState<KeysPanel> {
         notifier.updateKey(
           state.selectedGroupName,
           index,
-          ConfigKey(key: newKey, value: newValue),
+          newKey,
+          newValue,
         );
       },
     );
